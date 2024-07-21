@@ -8,6 +8,7 @@ import { Archivo } from "next/font/google";
 import { Libre_Franklin } from "next/font/google";
 import { Providers } from "./providers";
 import { Toaster } from "@/components/ui/toaster";
+import { Toaster as SnonnerToater } from "@/components/ui/sonner";
 import { Header } from "./_header/header";
 
 const archivo = Archivo({
@@ -22,12 +23,12 @@ const libre_franklin = Libre_Franklin({
 });
 
 export const metadata: Metadata = {
-  title: "WDC Template",
+  title: "Task Web App ",
   icons: [
     { rel: "icon", type: "image/png", sizes: "48x48", url: "/favicon.ico" },
   ],
   keywords: "yolo",
-  description: "A simple next.js template including drizzle and lucia auth",
+  description: "A simple Task Web App including drizzle and lucia auth",
 };
 
 export default async function RootLayout({
@@ -46,9 +47,12 @@ export default async function RootLayout({
         <Providers>
           <NextTopLoader />
           <Header />
-          <div className="container mx-auto w-full py-12">{children}</div>
+          <div className="max-h-auto container mx-auto h-[calc(100dvh-64px)] w-full py-2">
+            {children}
+          </div>
         </Providers>
         <Toaster />
+        <SnonnerToater />
       </body>
     </html>
   );

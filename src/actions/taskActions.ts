@@ -2,7 +2,7 @@
 import { db } from "@/db";
 import { tasks } from "@/db/schema";
 import { getCurrentUser } from "@/lib/session";
-import { asc, eq, inArray, not } from "drizzle-orm";
+import { and, asc, eq, inArray, not } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 // Ensure required fields are provided when adding a task
@@ -53,7 +53,7 @@ export const toggleTask = async (taskId: number) => {
     .set({
       completed: not(tasks.completed),
     })
-    .where(eq(tasks.id, taskId));
+    .where(and(eq(tasks.userId, user.id), eq(tasks.id, taskId)));
 
   revalidatePath("/");
 };
@@ -91,6 +91,8 @@ export const deleteTask = async (taskIds: number | number[]) => {
   // Ensure taskIds is an array
   const ids = Array.isArray(taskIds) ? taskIds : [taskIds];
 
-  await db.delete(tasks).where(inArray(tasks.id, ids));
+  await db
+    .delete(tasks)
+    .where(and(eq(tasks.userId, user.id), inArray(tasks.id, ids)));
   revalidatePath("/");
 };
